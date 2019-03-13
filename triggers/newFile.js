@@ -1,26 +1,22 @@
 const hydrators = require('../hydrators');
+const utils = require('../utils.js')
 
 const listFiles = (z, bundle) => {
-  // `z.console.log()` is similar to `console.log()`.
-  z.console.log('console says hello world!');
-
-  // You can build requests and our client will helpfully inject all the variables
-  // you need to complete. You can also register middleware to control this.
-
   // You may return a promise or a normal data structure from any perform method.
   return z.request({
-      url: 'http://57b20fb546b57d1100a3c405.mockapi.io/api/files',
+      url: utils.getFilesUrl(bundle),
     })
-    .then((response) => {
-      const files = JSON.parse(response.content);
+    .then(res => res.json)
+    .then(res => {
+      const files = res.files;
 
       // Make it possible to get the actual file contents if necessary (no need to make the request now)
       return files.map((file) => {
-        file.file = z.dehydrateFile(hydrators.downloadFile, {
-          fileId: file.id,
+        const dataPointer = z.dehydrate(hydrators.fileMeta, { // retrieve file metadata
+          filename: file.filename,
         });
 
-        return file;
+        return {id: file.filename, meta: dataPointer};
       });
     });
 };
@@ -43,17 +39,21 @@ module.exports = {
     perform: listFiles,
 
     sample: {
-      id: 1,
-      name: 'Example PDF',
-      file: 'SAMPLE FILE',
-      filename: 'example.pdf',
+      id: 'E52F6A0A-0C99-4150-A53D-DD994880F4B1.txt',
+      meta: {
+        filename: 'E52F6A0A-0C99-4150-A53D-DD994880F4B1.txt',
+        createdAt: '2019-03-12T18:47:09.869Z',
+        size: 0,
+        blocks: 0
+      }
     },
 
     outputFields: [
-      {key: 'id', type: 'integer', label: 'ID'},
-      {key: 'name', type: 'string', label: 'Name'},
-      {key: 'filename', type: 'string', label: 'Filename'},
-      {key: 'file', type: 'file', label: 'File'},
+      {key: 'meta__createdAt', type: 'datetime', label: 'Created At'},
+      {key: 'meta__size', type: 'integer', label: 'File Size (bytes)'},
+      {key: 'meta__blocks', type: 'integer', label: 'Blocks'},
+      {key: 'meta__filename', type: 'string', label: 'Filename'},
+      {key: 'meta__file', type: 'file', label: 'File'},
     ],
   },
 

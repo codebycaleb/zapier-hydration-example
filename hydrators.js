@@ -1,8 +1,11 @@
+const _ = require('lodash')
+const utils = require('./utils.js')
+
 const hydrators = {
   downloadFile: (z, bundle) => {
     // use standard auth to request the file
     const filePromise = z.request({
-      url: `https://wt-d9eeb64793d8836c8641adb2acda6ed3-0.run.webtask.io/download-file?id=${bundle.inputData.fileId}`,
+      url: `${utils.getFilesUrl(bundle)}/${bundle.inputData.filename}`,
       raw: true
     });
 
@@ -12,6 +15,15 @@ const hydrators = {
         z.console.log(`Stashed URL = ${url}`);
         return url;
       });
+  },
+  fileMeta: async (z, bundle) => {
+    const fileData = await z.request({ // retrieves the metadata for the file
+      url: `${utils.getFilesUrl(bundle)}/${bundle.inputData.filename}/meta`,
+    }).then(res => res.json);
+    return _.merge(
+      fileData, // combine file data with the file contents
+      {file: z.dehydrateFile(hydrators.downloadFile, {filename: bundle.inputData.filename}
+    )});
   },
 };
 
