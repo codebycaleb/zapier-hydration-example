@@ -1,11 +1,14 @@
 {
-  "name": "zapier-platform-example-app-files",
+  "name": "zapier-hydration-example",
   "version": "1.0.0",
   "description": "An example app for the Zapier platform.",
-  "repository": "zapier/zapier-platform-example-app-files",
-  "homepage": "https://zapier.com/",
-  "author": "Bryan Helmig <bryan@zapier.com>",
-  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codebycaleb/zapier-hydration-example.git"
+  },
+  "homepage": "https://github.com/codebycaleb/zapier-hydration-example/#readme",
+  "author": "",
+  "license": "ISC",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive --timeout=10000"
