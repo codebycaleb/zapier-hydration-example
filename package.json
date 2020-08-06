@@ -20,7 +20,7 @@
   "dependencies": {
     "content-disposition": "^0.5.3",
     "form-data": "2.1.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "zapier-platform-core": "8.0.1"
   },
   "devDependencies": {
