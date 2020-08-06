@@ -1,15 +1,12 @@
-const request = require('request');
 const FormData = require('form-data');
 const hydrators = require('../hydrators');
 const utils = require('../utils.js')
 
-const uploadFile = (z, bundle) => {
+const uploadFile = async (z, bundle) => {
   const formData = new FormData();
 
-  // file will in fact be an url where the file data can be downloaded from
-  // which we do via a stream created by NPM's request package
-  // (form-data doesn't play nicely with z.request)
-  formData.append('file', request(bundle.inputData.file));
+  const { file, filename } = await utils.retrieveFile(z, bundle.inputData.file);
+  formData.append('file', file, filename);
 
   return z.request({
       url: utils.getFilesUrl(bundle),

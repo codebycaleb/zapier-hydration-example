@@ -9,17 +9,17 @@ describe('creates', () => {
     it('should upload file without name', (done) => {
       const bundle = {
         inputData: {
-          filename: 'sample.pdf',
+          filename: 'foo.html',
 
-          // in production, this will be an hydration URL to the selected file's data
-          file: 'https://cdn.zapier.com/storage/files/f6679cf77afeaf6b8426de8d7b9642fc.pdf',
+          // in production, this will be a hydration URL to the selected file's data
+          file: 'http://test.greenbytes.de/tech/tc2231/inlwithasciifilename.asis',
         }
       };
 
       appTester(App.creates.uploadFile.operation.perform, bundle)
         .then((result) => {
           result.should.have.property('id');
-          result.name.should.containEql('sample.pdf');
+          result.name.should.containEql('foo.html');
           result.filename.should.eql('sample.pdf');
           result.file.should.containEql('hydrate|||');
 
@@ -31,19 +31,19 @@ describe('creates', () => {
     it('should upload file with name', (done) => {
       const bundle = {
         inputData: {
-          name: 'Sample',
-          filename: 'sample.pdf',
+          name: 'Foo',
+          filename: 'foo.html',
 
-          // in production, this will be an hydration URL to the selected file's data
-          file: 'https://cdn.zapier.com/storage/files/f6679cf77afeaf6b8426de8d7b9642fc.pdf',
+          // in production, this will be a hydration URL to the selected file's data
+          file: 'http://test.greenbytes.de/tech/tc2231/inlwithasciifilename.asis',
         }
       };
 
       appTester(App.creates.uploadFile.operation.perform, bundle)
         .then((result) => {
           result.should.have.property('id');
-          result.name.should.eql('Sample');
-          result.filename.should.eql('sample.pdf');
+          result.name.should.eql('Foo');
+          result.filename.should.eql('foo.html');
           result.file.should.containEql('hydrate|||');
 
           done();

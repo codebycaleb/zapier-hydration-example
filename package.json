@@ -18,9 +18,9 @@
     "npm": ">=5.6.0"
   },
   "dependencies": {
+    "content-disposition": "^0.5.3",
     "form-data": "2.1.4",
     "lodash": "^4.17.11",
-    "request": "2.81.0",
     "zapier-platform-core": "8.0.1"
   },
   "devDependencies": {
